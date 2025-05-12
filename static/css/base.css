@@ -1,0 +1,276 @@
+/* General Body Styling */
+body {
+    background-color: #1a1a1a;
+    color: #e0e0e0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+/* Button Styles */
+.btn {
+    border-radius: 8px;
+    font-weight: 500;
+    padding: 0.5rem 1.5rem;
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border: none;
+    cursor: pointer;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0, 204, 0, 0.3);
+}
+
+.btn:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(0, 204, 0, 0.5);
+}
+
+.btn-ver {
+    background-color: #007bff;
+    color: #ffffff;
+}
+
+.btn-ver:hover {
+    background-color: #0056b3;
+}
+
+.btn-editar, .btn-warning {
+    background-color: #ffca2c;
+    color: #1a1a1a;
+}
+
+.btn-editar:hover, .btn-warning:hover {
+    background-color: #e0a800;
+}
+
+.btn-volver, .btn-secondary {
+    background-color: #333333;
+    border: 1px solid #00cc00;
+    color: #00cc00;
+}
+
+.btn-volver:hover, .btn-secondary:hover {
+    background-color: #00cc00;
+    color: #1a1a1a;
+}
+
+.btn-aceptar, .btn-primary {
+    background-color: #00cc00;
+    color: #1a1a1a;
+}
+
+.btn-aceptar:hover, .btn-primary:hover {
+    background-color: #00b300;
+}
+
+.btn-cancelar {
+    background-color: #6c757d;
+    color: #ffffff;
+}
+
+.btn-cancelar:hover {
+    background-color: #5a6268;
+}
+
+.btn-eliminar, .btn-danger {
+    background-color: #dc3545;
+    color: #ffffff;
+}
+
+.btn-eliminar:hover, .btn-danger:hover {
+    background-color: #b02a37;
+}
+
+.btn-sm {
+    padding: 0.35rem 1rem;
+    font-size: 0.9rem; /* Slightly larger for readability */
+}
+
+/* Table Styles */
+.table {
+    background-color: rgb(23, 21, 21);
+    color: #e0e0e0;
+    border-radius: 12px;
+    overflow: hidden;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+.table th, .table td {
+    border: none;
+    padding: 1rem;
+    vertical-align: middle;
+}
+
+.table thead {
+    background-color: rgb(23, 21, 21);
+    color: #00cc00;
+    text-transform: uppercase;
+    font-weight: 600;
+}
+
+.table tbody tr {
+    transition: background-color 0.3s ease;
+    font-weight: bold;
+}
+
+.table tbody tr:hover {
+    background-color: rgb(23, 21, 21);
+}
+
+.table-striped tbody tr:nth-of-type(odd) {
+    background-color: rgb(23, 21, 21);
+}
+
+.table-img {
+    max-width: 100px;
+    height: auto;
+    border-radius: 8px;
+    object-fit: cover;
+}
+
+.icon-svg {
+    width: 20px;
+    height: 20px;
+}
+
+.h2-base {
+    color: #ffffff;
+    text-transform: uppercase;
+    font-family: 'Inter', 'Arial', sans-serif; /* Fuente moderna y limpia */
+    font-weight: 800; /* Peso grueso */
+    font-size: 2.5rem; /* Tamaño grande para impacto */
+    letter-spacing: 0.05em; /* Espaciado sutil para modernidad */
+    line-height: 1.2; /* Altura de línea para legibilidad */
+}
+
+.h2-detail {
+    color: #ffffff;
+    text-transform: uppercase;
+    font-size: 1.5rem;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+
+.header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.header-row-child {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.header-row-detail {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+@media (max-width: 768px) {
+    .header-row {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .header-row-detail {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .header-row .btn {
+        margin-top: 1rem;
+        width: 100%;
+        text-align: center;
+    }
+}
+
+.table-responsive {
+    border-radius: 12px;
+    background-color: rgb(23, 21, 21);
+    padding: 1rem;
+}
+
+/* Card Styles for Detail View and General Use */
+.detail-card {
+    background-color: #ffffff;
+    border: none;
+    border-radius: 12px;
+    color: #0d0d0d;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.detail-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(238, 239, 238, 0.4);
+}
+
+.detail-card .card-body {
+    background-color: #ffffff;
+    padding: 1.5rem;
+}
+
+.detail-card p {
+    font-size: 1rem;
+    color: #090909;
+    margin-bottom: 0.75rem;
+    font-weight: 500;
+}
+
+.detail-card p strong {
+    color: #100f10;
+    font-size: 1.2rem;
+}
+
+/* Alerts for Messages */
+.alert {
+    border-radius: 8px;
+    margin-bottom: 1.5rem;
+}
+
+.alert-success {
+    background-color: #00cc00;
+    color: #1a1a1a;
+    border: none;
+}
+
+.alert-info {
+    background-color: #007bff;
+    color: #ffffff;
+    border: none;
+}
+
+.alert-warning {
+    background-color: #ffca2c;
+    color: #1a1a1a;
+    border: none;
+}
+
+.alert-danger {
+    background-color: #dc3545;
+    color: #ffffff;
+    border: none;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .table th, .table td {
+        padding: 0.75rem;
+        font-size: 0.9rem;
+    }
+    .btn {
+        padding: 0.4rem 1rem;
+        font-size: 0.9rem;
+    }
+    .btn-sm {
+        padding: 0.3rem 0.8rem;
+        font-size: 0.85rem;
+    }
+    .detail-card .card-body {
+        padding: 1rem;
+    }
+}

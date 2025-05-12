@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -172,3 +173,36 @@ cython_debug/
 
 # PyPI configuration file
 .pypirc
+=======
+# Django
+*.pyc
+__pycache__/
+*.pyo
+*.pyd
+*.sqlite3
+*.log
+*.pid
+*.seed
+*.pot
+*.mo
+*.po
+*.cache
+*.egg-info/
+dist/
+build/
+
+# Virtual environment
+venv/
+env/
+
+# Static and media
+staticfiles/
+media/
+
+# Environment variables
+.env
+
+# IDE
+.vscode/
+*.code-workspace
+>>>>>>> b850d70 (Initial commit)

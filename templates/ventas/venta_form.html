@@ -1,0 +1,119 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-5" style="color: aliceblue;">
+    <h2>{% if form.instance.pk %}Editar Venta{% else %}Registrar Venta{% endif %}</h2>
+    <form method="post" class="needs-validation" novalidate>
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="id_cliente" class="form-label">Cliente</label>
+            {{ form.cliente }}
+            {% if form.cliente.errors %}
+                <div class="invalid-feedback">{{ form.cliente.errors.as_text }}</div>
+            {% endif %}
+        </div>
+        <div class="mb-3">
+            <label for="id_metodo_pago" class="form-label">Método de Pago</label>
+            {{ form.metodo_pago }}
+            {% if form.metodo_pago.errors %}
+                <div class="invalid-feedback">{{ form.metodo_pago.errors.as_text }}</div>
+            {% endif %}
+        </div>
+        <div class="mb-3">
+            <label for="id_notas" class="form-label">Notas</label>
+            {{ form.notas }}
+            {% if form.notas.errors %}
+                <div class="invalid-feedback">{{ form.notas.errors.as_text }}</div>
+            {% endif %}
+        </div>
+
+        <div class="mb-3">
+            <label for="id_estado_pedido" class="form-label">Estado Pedido</label>
+            {{ form.estado_pedido }}
+            {% if form.estado_pedido.errors %}
+                <div class="invalid-feedback">{{ form.estado_pedido.errors.as_text }}</div>
+            {% endif %}
+        </div>
+
+        <div class="mb-3">
+            <label for="id_numero_guia" class="form-label">Numero Guia</label>
+            {{ form.numero_guia }}
+            {% if form.numero_guia.errors %}
+                <div class="invalid-feedback">{{ form.numero_guia.errors.as_text }}</div>
+            {% endif %}
+        </div>
+
+        <h3>Productos</h3>
+        {{ formset.management_form }}
+        <table class="table table-bordered" id="producto-table">
+            <thead>
+                <tr>
+                    <th>Producto</th>
+                    <th>Cantidad</th>
+                    <th>Precio Unitario</th>
+                    <th>Acción</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for form in formset %}
+                <tr class="producto-row">
+                    <td>{{ form.producto }}</td>
+                    <td>{{ form.cantidad }}</td>
+                    <td>{{ form.precio_unitario }}</td>
+                    <td>
+                        <button type="button" class="btn btn-danger btn-sm remove-producto">Eliminar</button>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <button type="button" class="btn btn-outline-success mb-3" id="add-producto">Añadir Producto</button>
+        <div class="mb-3">
+            <label for="id_total" class="form-label">Total</label>
+            {{ form.total }}
+            {% if form.total.errors %}
+                <div class="invalid-feedback">{{ form.total.errors.as_text }}</div>
+            {% endif %}
+        </div>
+        <br>
+        <div class="header-row-child">
+            <button type="submit" class="btn btn-outline-primary mx-3">Registrar Venta</button>
+            <a href="{% url 'venta_list' %}" class="btn btn-outline-secondary mx-3">Cancelar</a>
+        </div>
+        
+    </form>
+    <br>
+    <br>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const table = document.getElementById('producto-table').getElementsByTagName('tbody')[0];
+    const addButton = document.getElementById('add-producto');
+    const totalForms = document.getElementById('id_form-TOTAL_FORMS');
+
+    addButton.addEventListener('click', function() {
+        const rowCount = table.getElementsByTagName('tr').length;
+        const newRow = table.getElementsByTagName('tr')[0].cloneNode(true);
+        newRow.querySelectorAll('select, input').forEach(function(input) {
+            const name = input.name.replace(/form-\d+-/, `form-${rowCount}-`);
+            const id = input.id.replace(/id_form-\d+-/, `id_form-${rowCount}-`);
+            input.name = name;
+            input.id = id;
+            if (input.type !== 'select-one') input.value = '';
+        });
+        table.appendChild(newRow);
+        totalForms.value = parseInt(totalForms.value) + 1;
+    });
+
+    table.addEventListener('click', function(e) {
+        if (e.target.classList.contains('remove-producto')) {
+            const row = e.target.closest('tr');
+            if (table.getElementsByTagName('tr').length > 1) {
+                row.remove();
+                totalForms.value = parseInt(totalForms.value) - 1;
+            }
+        }
+    });
+});
+</script>
+{% endblock %}

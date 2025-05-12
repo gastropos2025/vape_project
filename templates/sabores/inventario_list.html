@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div class="container mt-5">
+    <div class="header-row">
+        <h2 class="h2-base">Inventario</h2>
+        <a href="{% url 'inventario_create' %}" class="btn btn-outline-primary mb-3">Añadir Registro de Inventario</a>
+    </div>
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Producto</th>
+                    <th>Cantidad Disponible</th>
+                    <th>Última Actualización</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for inventario in inventarios %}
+                <tr>
+                    <td>{{ inventario.producto.nombre }}</td>
+                    <td>{{ inventario.cantidad_disponible }}</td>
+                    <td>{{ inventario.fecha_actualizacion|date:"d/m/Y H:i" }}</td>
+                    <td>
+                        <a href="{% url 'inventario_edit' inventario.pk %}" class="btn btn-sm btn-warning">
+                            <img src="{% static 'icons/edit-svg.svg' %}" alt="Editar" class="icon-svg">
+                        </a>
+                        <a href="{% url 'inventario_delete' inventario.pk %}" class="btn btn-sm btn-danger">
+                            <img src="{% static 'icons/delete-svg.svg' %}" alt="Eliminar" class="icon-svg">
+                        </a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="4">No hay registros de inventario disponibles.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

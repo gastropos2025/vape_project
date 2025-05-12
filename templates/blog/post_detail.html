@@ -1,0 +1,24 @@
+{% extends 'landing.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container py-5" style="color: aliceblue;">
+    <article>
+        <br>
+        <h1 class="display-4" style="font-family: 'Orbitron', sans-serif; color: #8a238c;">{{ post.title }}</h1>
+        <br>
+        <div class="card-meta mb-4">
+            <span><i class="fas fa-user"></i> {{ post.author.username }}</span> |
+            <span><i class="fas fa-calendar"></i> {{ post.published_at|date:"d M Y" }}</span> |
+            <span><i class="fas fa-folder"></i> {% for category in post.categories.all %}{{ category.name }}{% if not forloop.last %}, {% endif %}{% endfor %}</span>
+        </div>
+        {% if post.image %}
+        <img src="{{ post.image.url }}" class="img-fluid rounded mb-4" alt="{{ post.title }}" style="max-height: 400px; object-fit: cover;">
+        {% endif %}
+        <div class="content" style="font-family: 'Anonymous Pro', monospace;">
+            {{ post.content|safe }}
+        </div>
+        <a href="{% url 'blog' %}" class="btn btn-read-more mt-4">Volver al Blog</a>
+    </article>
+</div>
+{% endblock %}

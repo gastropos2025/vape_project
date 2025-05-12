@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-5" style="color: aliceblue;">
+    <h2>{{ action }} Registro de Inventario</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <br>
+        <div class="header-row-child">
+            <button type="submit" class="btn btn-outline-primary mx-3">Guardar</button>
+            <a href="{% url 'inventario_list' %}" class="btn btn-outline-secondary mx-3">Cancelar</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

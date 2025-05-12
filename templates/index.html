@@ -1,0 +1,140 @@
+{% extends 'landing.html' %}
+{% load static %}
+{% load humanize %}
+{% block title %}GreenBoys - Inicio{% endblock %}
+
+{% block content %}
+<style>
+    @font-face {
+            font-family: 'Infinite Stroke';
+            src: url("{% static 'fonts/infinite-stroke.ttf' %}") format('truetype');
+            font-weight: normal;
+            font-style: italic;
+        }
+        
+        @font-face {
+            font-family: 'Anonymous Pro';
+            src: url("{% static 'fonts/anonymous-pro.ttf' %}") format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+</style>
+    <!-- Contenido principal -->
+    <div id="inicio" class="container main-content">
+        <!-- Sección de inicio -->
+        <div class="intro-section">
+            <!-- Imagen destacada -->
+            <div class="banner-section">
+                <img src="{% static 'images/banner.png' %}" alt="Banner" class="banner-img">
+            </div>
+
+            <!-- Logotipo con efecto de lupa -->
+            <div class="logo-section">
+                <img src="{% static 'images/sponsor.jpg' %}" alt="GreenBoys Logo" class="logo-img">
+                
+            </div>
+        </div>
+
+
+<div id="sabores" class="carousel-container">
+    <h1 class="footer-title">Sabores</h1>
+    <div id="flavorCarousel" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-inner">
+            {% for sabor in sabores %}
+            <div class="carousel-item {% if forloop.first %}active{% endif %}" data-sabor-id="{{ sabor.id }}" style="cursor: pointer;">
+                <img src="{{ sabor.imagen.url }}" class="d-block" alt="{{ sabor.nombre }}">
+                <div class="carousel-content my-4">
+                    <br>
+                    <br>
+                    <h1 class="second-title">{{ sabor.nombre }}</h1>
+                    <div class="flavor-strain-container">
+                        <div class="flavor-details">
+                            <div class="personalizado-title">FLAVOR</div>
+                            <div class="flavor-items">
+                                {% if sabor.sabor1 %}
+                                    <span class="flavor-item">{{ sabor.sabor1 }}</span>
+                                {% endif %}
+                                {% if sabor.sabor2 %}
+                                    <span class="flavor-item">{{ sabor.sabor2 }}</span>
+                                {% endif %}
+                                {% if sabor.sabor3 %}
+                                    <span class="flavor-item">{{ sabor.sabor3 }}</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <br>
+                        <div class="effect-details">
+                            <div class="personalizado-title">EFFECTS</div>
+                            <span class="flavor-item">{{ sabor.efecto }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="carousel-item active">
+                <div class="carousel-content">
+                    <p>No hay sabores disponibles</p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#flavorCarousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Anterior</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#flavorCarousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Siguiente</span>
+        </button>
+    </div>
+</div>
+<div class="modal fade" id="productosModal" tabindex="-1" aria-labelledby="productosModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-body" id="productosContent">
+                <!-- Contenido de productos se cargará aquí -->
+            </div>
+        </div>
+    </div>
+</div>
+
+    <!-- Contacto Form Section -->
+    <div id="contacto" class="contact-section">
+        <h3 class="footer-title">Contáctanos</h3>
+        <br>
+
+        <form action="{% url 'contact' %}" method="post" class="contact-form">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="name" class="form-label">Nombre</label>
+                <input type="text" class="form-control" id="name" name="name" required>
+            </div>
+            <div class="form-group">
+                <label for="email" class="form-label">Correo Electrónico</label>
+                <input type="email" class="form-control" id="email" name="email" required>
+            </div>
+            <div class="form-group">
+                <label for="subject" class="form-label">Asunto</label>
+                <input type="text" class="form-control" id="subject" name="subject" required>
+            </div>
+            <div class="form-group">
+                <label for="message" class="form-label">Mensaje</label>
+                <textarea class="form-control" id="message" name="message" rows="4" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-submit">Enviar</button>
+        </form>
+    </div>
+
+
+    <!-- Floating Social Buttons -->
+    <div class="floating-buttons">
+        <a href="https://wa.me/573054158723" target="_blank" class="float-btn leaf-btn whatsapp-btn" aria-label="Contactar por WhatsApp">
+            <i class="fab fa-whatsapp"></i>
+        </a>
+        <a href="https://instagram.com/greenboys.col" target="_blank" class="float-btn leaf-btn instagram-btn" aria-label="Visitar Instagram">
+            <i class="fab fa-instagram"></i>
+        </a>
+    </div>
+    {% endblock %}
+    

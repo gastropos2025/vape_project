@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div class="container mt-5">
+    <div class="header-row">
+        <h2 class="h2-base">Clientes</h2>
+        <a href="{% url 'cliente_create' %}" class="btn btn-outline-primary mb-3">Añadir Cliente</a>
+    </div>
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Email</th>
+                    <th>Teléfono</th>
+                    <th>Dirección</th>
+                    <th>Cuenta</th>
+                    <th>Fecha de Registro</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for cliente in clientes %}
+                <tr>
+                    <td>{{ cliente.nombre }}</td>
+                    <td>{{ cliente.email|default:"Sin email" }}</td>
+                    <td>{{ cliente.telefono|default:"Sin teléfono" }}</td>
+                    <td>{{ cliente.direccion|default:"Sin dirección" }}</td>
+                    <td>
+                        {% if cliente.account %}
+                            <a href="{{ cliente.account }}" class="btn btn-info" target="_blank" title="Instagram">
+                                <img src="{% static 'icons/view-svg.svg' %}" alt="Instagram" class="icon-svg">
+                            </a>
+                        {% else %}
+                            Sin cuenta
+                        {% endif %}
+                    </td>
+                    <td>{{ cliente.fecha_registro|date:"d/m/Y" }}</td>
+
+                    <td>
+                        <a href="{% url 'cliente_edit' cliente.pk %}" class="btn btn-sm btn-warning">
+                            <img src="{% static 'icons/edit-svg.svg' %}" alt="Editar" class="icon-svg">
+                        </a>
+                        <a href="{% url 'cliente_delete' cliente.pk %}" class="btn btn-sm btn-danger">
+                            <img src="{% static 'icons/delete-svg.svg' %}" alt="Eliminar" class="icon-svg">
+                        </a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="6">No hay clientes registrados.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

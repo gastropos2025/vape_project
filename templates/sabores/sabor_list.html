@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div class="container mt-5">
+    <div class="header-row">
+        <h2 class="h2-base">Sabores</h2>
+        <a href="{% url 'sabor_create' %}" class="btn btn-outline-primary">Añadir Sabor</a>
+    </div>
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Imagen</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for sabor in sabores %}
+                <tr>
+                    <td>{{ sabor.nombre }}</td>
+                    <td>
+                        {% if sabor.imagen %}
+                            <img src="{{ sabor.imagen.url }}" alt="{{ sabor.nombre }}" class="table-img">
+                        {% else %}
+                            Sin imagen
+                        {% endif %}
+                    </td>
+                    <td>
+                        <a href="{% url 'sabor_edit' sabor.pk %}" class="btn btn-sm btn-warning">
+                            <img src="{% static 'icons/edit-svg.svg' %}" alt="Editar" class="icon-svg">
+                        </a>
+                        <a href="{% url 'sabor_delete' sabor.pk %}" class="btn btn-sm btn-danger">
+                            <img src="{% static 'icons/delete-svg.svg' %}" alt="Eliminar" class="icon-svg">
+                        </a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="3">No hay sabores disponibles.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

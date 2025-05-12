@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-5" style="color: aliceblue;">
+    <h2>{% if form.instance.pk %}Editar Cliente{% else %}Añadir Cliente{% endif %}</h2>
+    <form method="post" class="needs-validation" novalidate>
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="id_nombre" class="form-label">Nombre</label>
+            {{ form.nombre }}
+            {% if form.nombre.errors %}
+                <div class="invalid-feedback">{{ form.nombre.errors.as_text }}</div>
+            {% endif %}
+        </div>
+        <div class="mb-3">
+            <label for="id_email" class="form-label">Email</label>
+            {{ form.email }}
+            {% if form.email.errors %}
+                <div class="invalid-feedback">{{ form.email.errors.as_text }}</div>
+            {% endif %}
+        </div>
+        <div class="mb-3">
+            <label for="id_telefono" class="form-label">Teléfono</label>
+            {{ form.telefono }}
+            {% if form.telefono.errors %}
+                <div class="invalid-feedback">{{ form.telefono.errors.as_text }}</div>
+            {% endif %}
+        </div>
+        <div class="mb-3">
+            <label for="id_account" class="form-label">Cuenta Usuario</label>
+            {{ form.account }}
+            {% if form.account.errors %}
+                <div class="invalid-feedback">{{ form.account.errors.as_text }}</div>
+            {% endif %}
+        </div>
+        <div class="mb-3">
+            <label for="id_direccion" class="form-label">Dirección</label>
+            {{ form.direccion }}
+            {% if form.direccion.errors %}
+                <div class="invalid-feedback">{{ form.direccion.errors.as_text }}</div>
+            {% endif %}
+        </div>
+        <br>
+        <div class="header-row-child">
+            <button type="submit" class="btn btn-outline-primary mx-3">Guardar</button>
+        <a href="{% url 'cliente_list' %}" class="btn btn-outline-secondary mx-3">Cancelar</a>
+        </div>
+        
+    </form>
+    <br>
+    <br>
+</div>
+{% endblock %}

@@ -1,0 +1,191 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Factura - Venta {{ venta.id }}</title>
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 12pt;
+            color: #1a1a1a;
+            background-color: #ffffff;
+            margin: 0;
+            padding: 0;
+        }
+        .invoice-container {
+            width: 1100px;
+            margin: 0 auto;
+            padding: 20px;
+            border: 1px solid #00cc00;
+            background-color: #f9f9f9;
+        }
+        .invoice-header {
+            display: table;
+            width: 100%;
+            border-bottom: 2px solid #00cc00;
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+        }
+        .business-info, .sale-info {
+            display: table-cell;
+            vertical-align: top;
+        }
+        .business-info {
+            width: 50%;
+        }
+        .sale-info {
+            width: 50%;
+            text-align: right;
+        }
+        .invoice-logo {
+            max-width: 150px;
+            height: auto;
+        }
+        .business-info h1 {
+            color: #00cc00;
+            font-size: 18pt;
+            margin: 0;
+        }
+        .business-info p, .sale-info p {
+            margin: 5px 0;
+            font-size: 10pt;
+        }
+        .sale-details, .products-table {
+            margin-top: 20px;
+        }
+        .sale-details h2, .products-table h2 {
+            color: #030303;
+            font-size: 14pt;
+            margin-bottom: 10px;
+        }
+        .details-grid {
+            display: table;
+            width: 100%;
+        }
+        .details-grid p {
+            display: table-row;
+            margin: 5px 0;
+            font-size: 10pt;
+        }
+        .details-grid p strong {
+            display: table-cell;
+            width: 30%;
+            color: #000000;
+        }
+        .details-grid p span {
+            display: table-cell;
+        }
+        .badge {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 10pt;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+        .badge-pendiente {
+            background-color: #ffca2c;
+            color: #1a1a1a;
+        }
+        .badge-enviado {
+            background-color: #007bff;
+            color: #ffffff;
+        }
+        .badge-entregado {
+            background-color: #00cc00;
+            color: #1a1a1a;
+        }
+        .badge-cancelado {
+            background-color: #dc3545;
+            color: #ffffff;
+        }
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        .table th, .table td {
+            border: 1px solid #00cc00;
+            padding: 8px;
+            text-align: left;
+            font-size: 10pt;
+        }
+        .table th {
+            background-color: #00cc00;
+            color: #1a1a1a;
+            font-weight: bold;
+        }
+        .table td {
+            background-color: #ffffff;
+        }
+        .table tr:nth-child(even) td {
+            background-color: #f0f0f0;
+        }
+        .total {
+            text-align: right;
+            font-size: 12pt;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="invoice-container">
+        <div class="invoice-header">
+            <div class="business-info">
+                <h1>GreenBoys Vape Shop</h1>
+                <p>Dirección: Av. Principal 123, Ciudad, País</p>
+                <p>Teléfono: +123 456 7890</p>
+                <p>Email: contacto@greenboysvape.com</p>
+                <p>RUC: 123456789012</p>
+            </div>
+            <div class="sale-info">
+                <h2>Factura #{{ venta.id }}</h2>
+                <p><strong>Fecha de Emisión:</strong> {{ venta.fecha_venta|date:"d/m/Y" }}</p>
+                <p><strong>Cliente:</strong> {{ venta.cliente.nombre|default:"Sin cliente" }}</p>
+                <p><strong>Email:</strong> {{ venta.cliente.email|default:"Sin email" }}</p>
+                <p><strong>Teléfono:</strong> {{ venta.cliente.telefono|default:"Sin teléfono" }}</p>
+            </div>
+        </div>
+        <div class="sale-details">
+            <h2>Detalles de la Venta</h2>
+            <div class="details-grid">
+                <p><strong>Método de Pago:</strong> <span>{{ venta.get_metodo_pago_display }}</span></p>
+                <p><strong>Estado:</strong> <span class="badge badge-{{ venta.estado_pedido|lower }}">{{ venta.get_estado_pedido_display|default:"Sin estado" }}</span></p>
+                <p><strong>Número de Guía:</strong> <span>{{ venta.numero_guia|default:"Sin guía" }}</span></p>
+                <p><strong>Fecha de Venta:</strong> <span>{{ venta.fecha_venta|date:"d/m/Y H:i" }}</span></p>
+                <p><strong>Notas:</strong> <span>{{ venta.notas|default:"Sin notas" }}</span></p>
+            </div>
+        </div>
+        <div class="products-table">
+            <h2>Productos</h2>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Producto</th>
+                        <th>Cantidad</th>
+                        <th>Precio Unitario</th>
+                        <th>Subtotal</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for vp in venta_productos %}
+                    <tr>
+                        <td>{{ vp.producto.nombre }}</td>
+                        <td>{{ vp.cantidad }}</td>
+                        <td>${{ vp.precio_unitario }}</td>
+                        <td>${{ vp.get_subtotal }}</td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="4">No hay productos en esta venta.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <p class="total">Total: ${{ venta.total }}</p>
+        </div>
+    </div>
+</body>
+</html>

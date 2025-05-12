@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-5" style="color: aliceblue;">
+    <h2 class="h2-base">{{ action }} Sabor</h2>
+    <br>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <br>
+        <div class="header-row-child">
+            <button type="submit" class="btn btn-outline-primary mx-3">Guardar</button>
+            <a href="{% url 'sabor_list' %}" class="btn btn-outline-secondary mx-3">Cancelar</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

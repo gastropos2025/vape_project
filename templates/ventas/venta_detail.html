@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div class="container mt-5">
+
+    <div>    
+        <h2 class="h2-detail">Venta - {{ venta.id }}</h2>
+    </div>
+    <br>
+    <div class="card detail-card mb-3">
+        <div class="card-body">
+            <div class="header-row-detail">
+                <p><strong>Fecha:</strong> {{ venta.fecha_venta|date:"d/m/Y H:i" }}</p>
+                <p><strong>Cliente:</strong> {{ venta.cliente.nombre }}</p>             
+            </div>
+            <div class="header-row-detail">
+                <p><strong>Método de Pago:</strong> {{ venta.get_metodo_pago_display }}</p>
+                <p><strong>Estado:</strong> {{ venta.estado_pedido }}</p>
+                
+            </div>
+            <div class="header-row-detail">
+                <p><strong>Numero de guia:</strong> {{ venta.numero_guia }}</p>
+                <p><strong>Total:</strong> ${{ venta.total }}</p>
+            </div>
+            <p><strong>Notas:</strong> {{ venta.notas|default:"Sin notas" }}</p>
+        </div>
+    </div>
+    <div class="header-row">
+        <a href="{% url 'venta_list' %}" class="btn btn-outline-danger">Volver</a>
+    </div>
+    <h3 class="h2-detail">Productos</h3>
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Producto</th>
+                    <th>Cantidad</th>
+                    <th>Precio Unitario</th>
+                    <th>Subtotal</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for vp in venta_productos %}
+                <tr>
+                    <td>{{ vp.producto.nombre }}</td>
+                    <td>{{ vp.cantidad }}</td>
+                    <td>${{ vp.precio_unitario }}</td>
+                    <td>${{ vp.get_subtotal }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="4">No hay productos en esta venta.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <br>
+    <br>
+</div>
+{% endblock %}

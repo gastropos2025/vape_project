@@ -1,0 +1,378 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GreenBoys - {% block title %}{% endblock %}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</head>
+<body  style="background-color: rgb(23, 21, 21);">
+    <style>
+        @font-face {
+            font-family: 'Infinite Stroke';
+            src: url("{% static 'fonts/infinite-stroke.ttf' %}") format('truetype');
+            font-weight: normal;
+            font-style: italic;
+        }
+
+        @font-face {
+            font-family: 'Anonymous Pro';
+            src: url("{% static 'fonts/anonymous-pro.ttf' %}") format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        .flavor-item {
+            position: relative;
+            padding-left: 25px; /* Space for the icon */
+        }
+        
+        .diesel-icon::before,
+        .cake-icon::before,
+        .blueberry-icon::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 20px;
+            height: 20px;
+            background-size: contain;
+            background-repeat: no-repeat;
+        }
+        
+        .diesel-icon::before {
+            background-image: url('{% static "images/diesel-icon.png" %}');
+        }
+        
+        .cake-icon::before {
+            background-image: url('{% static "images/cake-icon.png" %}');
+        }
+        
+        .blueberry-icon::before {
+            background-image: url('{% static "images/blueberry-icon.png" %}');
+        }
+        /* Floating Buttons Styling */
+.floating-buttons {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    z-index: 1000;
+}
+
+.leaf-btn {
+    width: 60px;
+    height: 40px;
+    background: url('{% static "images/leaf-shape.png" %}') no-repeat center;
+    background-size: contain;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    transition: transform 0.3s ease;
+}
+
+.whatsapp-btn {
+    color: #1ca74f; /* Verde de WhatsApp */
+}
+
+.instagram-btn {
+    color: #aa204e; /* Rosa de Instagram */
+}
+
+.leaf-btn:hover {
+    transform: scale(1.2) rotate(5deg); /* Crece y gira como hoja al viento */
+}
+
+/* Modal Dialog Centering */
+#productosModal .modal-dialog {
+    animation: growIn 0.3s ease-in-out;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    margin: 0 auto;
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+/* Ensure modal stays centered on mobile */
+@media (max-width: 576px) {
+    #productosModal .modal-dialog {
+        margin: 0 auto;
+        min-height: 100vh;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+
+    #productosModal .modal-title {
+        font-size: 1.5rem;
+    }
+
+    #productosModal .product-image {
+        max-height: 300px;
+        width: 100%;
+        object-fit: cover;
+    }
+
+    #productosModal .card-title {
+        font-size: 1.2rem;
+    }
+}
+
+/* Existing Animation */
+@keyframes growIn {
+    0% {
+        transform: scale(0.8) translateY(-50%);
+        opacity: 0;
+    }
+    100% {
+        transform: scale(1) translateY(-50%);
+        opacity: 1;
+    }
+}
+
+/* Modal Styling */
+#productosModal .modal-content {
+    background-color: #1a1a1a;
+    color: #e0e0e0;
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+    position: relative;
+    overflow: hidden;
+}
+
+/* Leafy background overlay */
+#productosModal .modal-content::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('{% static "images/leaf-pattern.png" %}') repeat;
+    opacity: 0.1;
+    z-index: 0;
+}
+
+/* Modal Header */
+#productosModal .modal-header {
+    background-color: #3e2a4f;
+    border-bottom: 1px solid #5b3c6b;
+    padding: 15px 20px;
+    position: relative;
+    z-index: 1;
+}
+
+#productosModal .modal-title {
+    font-family: 'Infinite Stroke', sans-serif;
+    color: #a66bbf;
+    font-size: 1.8rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+#productosModal .btn-close {
+    filter: invert(80%) sepia(20%) saturate(300%) hue-rotate(250deg);
+    transition: transform 0.3s ease;
+}
+
+#productosModal .btn-close:hover {
+    transform: rotate(90deg);
+}
+
+/* Modal Body */
+#productosModal .modal-body {
+    max-height: 500px;
+    overflow-y: auto;
+    padding: 20px;
+    background-color: transparent;
+    position: relative;
+    z-index: 1;
+}
+
+#productosModal .card {
+    background-color: #252525;
+    border: none;
+    border-radius: 10px;
+    margin-bottom: 15px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+#productosModal .card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(107, 62, 142, 0.3);
+}
+
+#productosModal .card-body {
+    font-family: 'Anonymous Pro', monospace;
+    color: #d0d0d0;
+}
+
+#productosModal .card-title {
+    color: #a66bbf;
+    font-size: 1.4rem;
+    margin-bottom: 10px;
+}
+
+#productosModal .card-text {
+    font-size: 1rem;
+    color: #b0b0b0;
+}
+
+#productosModal .card-text strong {
+    color: #a66bbf;
+}
+
+#productosModal .product-image {
+    max-height: 250px;
+    width: 100%;
+    object-fit: cover;
+    border-radius: 10px 0 0 10px;
+}
+
+/* Buy Button Styling */
+#productosModal .btn-buy {
+    background-color: #6b3e8e;
+    border: none;
+    font-family: 'Anonymous Pro', monospace;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    margin-top: 10px;
+}
+
+#productosModal .btn-buy:hover {
+    background-color: #8a4aaf;
+    transform: scale(1.05);
+}
+
+/* Styling for Flavor and Effects Section */
+#productosModal .carousel-caption {
+    background-color: rgba(37, 37, 37, 0.9);
+    border-radius: 10px;
+    padding: 15px;
+    margin-top: 20px;
+}
+
+#productosModal .flavor-strain-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin-top: 10px;
+}
+
+#productosModal .flavor-section, #productosModal .strain-section {
+    flex: 1;
+    min-width: 200px;
+}
+
+#productosModal .flavor-label, #productosModal .strain-label {
+    color: #a66bbf;
+    font-size: 1.1rem;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+#productosModal .flavor-items {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+#productosModal .flavor-item {
+    background-color: #3e2a4f;
+    color: #e0e0e0;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 0.9rem;
+}
+
+#productosModal .strain-type {
+    color: #d0d0d0;
+    font-size: 1rem;
+}
+
+/* Modal Footer */
+#productosModal .modal-footer {
+    background-color: #3e2a4f;
+    border-top: 1px solid #5b3c6b;
+    padding: 15px 20px;
+    position: relative;
+    z-index: 1;
+}
+
+#productosModal .btn-secondary {
+    background-color: #6b3e8e;
+    border: none;
+    font-family: 'Anonymous Pro', monospace;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+#productosModal .btn-secondary:hover {
+    background-color: #8a4aaf;
+    transform: scale(1.05);
+}
+
+/* Scrollbar Styling for Modal Body */
+#productosModal .modal-body::-webkit-scrollbar {
+    width: 8px;
+}
+
+#productosModal .modal-body::-webkit-scrollbar-track {
+    background: #2a2a2a;
+    border-radius: 10px;
+}
+
+#productosModal .modal-body::-webkit-scrollbar-thumb {
+    background: #6b3e8e;
+    border-radius: 10px;
+}
+
+#productosModal .modal-body::-webkit-scrollbar-thumb:hover {
+    background: #8a4aaf;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 576px) {
+    #productosModal .modal-dialog {
+        margin: 10px;
+    }
+
+    #productosModal .modal-title {
+        font-size: 1.5rem;
+    }
+
+    #productosModal .product-image {
+        max-height: 300px;
+        width: 100%;
+        object-fit: cover;
+    }
+
+    #productosModal .card-title {
+        font-size: 1.2rem;
+    }
+
+    #productosModal .flavor-strain-container {
+        flex-direction: column;
+    }
+
+    #productosModal .flavor-item {
+        font-size: 0.8rem;
+    }
+}
+    </style>
+    {% block content %}
+    {% endblock %}
+</body>
+</html>

@@ -1,0 +1,197 @@
+{% extends 'landing.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+    /* Blog Dark Theme */
+.blog-dark-section {
+    background: #000000; /* Fondo oscuro */
+    color: #e0e0e0; /* Texto claro */
+    padding: 60px 0;
+    min-height: 100vh;
+}
+
+.blog-dark-title {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 3rem;
+    color: #8a238c; /* Verde de GreenBoys */
+    text-align: center;
+    margin-bottom: 40px;
+    text-transform: uppercase;
+}
+
+.blog-dark-categories {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.btn-dark-category {
+    background: #333;
+    color: #e0e0e0;
+    border: 1px solid #8a238c;
+    font-family: 'Orbitron', sans-serif;
+    margin: 5px;
+    padding: 8px 16px;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+}
+
+.btn-dark-category:hover,
+.btn-dark-category.active {
+    background: #8a238c;
+    color: #fff;
+    border-color: #8a238c;
+}
+
+.blog-dark-card {
+    background: #2a2a2a; /* Tarjetas más claras que el fondo */
+    border: none;
+    border-radius: 10px;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.blog-dark-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
+}
+
+.blog-dark-card-img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-bottom: 2px solid #8a238c;
+}
+
+.blog-dark-card-body {
+    padding: 20px;
+}
+
+.blog-dark-card-meta {
+    font-size: 0.9rem;
+    color: #999;
+    margin-bottom: 10px;
+}
+
+.blog-dark-card-meta span {
+    margin-right: 10px;
+}
+
+.blog-dark-card-title {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.5rem;
+    color: #e0e0e0;
+    margin-bottom: 15px;
+}
+
+.blog-dark-card-text {
+    font-family: 'Anonymous Pro', monospace;
+    color: #b0b0b0;
+    font-size: 1rem;
+    margin-bottom: 15px;
+}
+
+.btn-dark-read-more {
+    background: #8a238c;
+    color: #fff;
+    font-family: 'Orbitron', sans-serif;
+    padding: 10px 20px;
+    border-radius: 5px;
+    border: none;
+    transition: background 0.3s ease;
+}
+
+.btn-dark-read-more:hover {
+    background: #aa204e; /* Rosa de Instagram */
+}
+
+.blog-dark-empty {
+    font-family: 'Anonymous Pro', monospace;
+    color: #b0b0b0;
+    text-align: center;
+    font-size: 1.2rem;
+}
+
+.page-link-dark {
+    background: #333;
+    color: #e0e0e0;
+    border: 1px solid #8a238c;
+    font-family: 'Orbitron', sans-serif;
+}
+
+.page-link-dark:hover,
+.page-item.active .page-link-dark {
+    background: #8a238c;
+    color: #fff;
+    border-color: #8a238c;
+}
+</style>
+<div class="blog-dark-section">
+    <div class="container">
+        <br>
+        <div style="text-align: center;">
+            <h1 class="navbar-card-flavor">GreenBoys Blog</h1>
+        </div>
+        
+        <br>
+        <div class="blog-dark-categories">
+            <a href="{% url 'blog' %}" class="btn btn-dark-category {% if not current_category %}active{% endif %}">Todas</a>
+            {% for category in categories %}
+            <a href="{% url 'blog_category' category.slug %}" class="btn btn-dark-category {% if current_category and current_category.slug == category.slug %}active{% endif %}">{{ category.name }}</a>
+            {% endfor %}
+        </div>
+        <div class="row">
+            {% for post in posts %}
+            <div class="col-md-4 mb-4">
+                <div class="blog-dark-card">
+                    {% if post.image %}
+                    <img src="{{ post.image.url }}" class="blog-dark-card-img" alt="{{ post.title }}">
+                    {% else %}
+                    <img src="{% static 'images/placeholder.jpg' %}" class="blog-dark-card-img" alt="Placeholder">
+                    {% endif %}
+                    <div class="blog-dark-card-body">
+                        <div class="blog-dark-card-meta">
+                            <span><i class="fas fa-user"></i> {{ post.author.username }}</span>
+                            <span><i class="fas fa-calendar"></i> {{ post.published_at|date:"d M Y" }}</span>
+                        </div>
+                        <h5 class="blog-dark-card-title">{{ post.title }}</h5>
+                        <p class="blog-dark-card-text">{{ post.content|truncatewords:30 }}</p>
+                        <a href="{% url 'blog_post' post.slug %}" class="btn btn-dark-read-more">Leer más</a>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-12">
+                <p class="blog-dark-empty">No hay publicaciones disponibles.</p>
+            </div>
+            {% endfor %}
+        </div>
+        <!-- Paginación -->
+        {% if page_obj %}
+        <nav aria-label="Page navigation" class="mt-4">
+            <ul class="pagination justify-content-center">
+                {% if page_obj.has_previous %}
+                <li class="page-item">
+                    <a class="page-link page-link-dark" href="?page={{ page_obj.previous_page_number }}" aria-label="Previous">
+                        <span aria-hidden="true">«</span>
+                    </a>
+                </li>
+                {% endif %}
+                {% for num in page_obj.paginator.page_range %}
+                <li class="page-item {% if page_obj.number == num %}active{% endif %}">
+                    <a class="page-link page-link-dark" href="?page={{ num }}">{{ num }}</a>
+                </li>
+                {% endfor %}
+                {% if page_obj.has_next %}
+                <li class="page-item">
+                    <a class="page-link page-link-dark" href="?page={{ page_obj.next_page_number }}" aria-label="Next">
+                        <span aria-hidden="true">»</span>
+                    </a>
+                </li>
+                {% endif %}
+            </ul>
+        </nav>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
